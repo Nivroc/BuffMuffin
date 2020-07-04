@@ -1,0 +1,99 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.33.0.
+--
+-- see: https://github.com/sol/hpack
+--
+-- hash: c06f45142d7c81aa3bc37fc6ea4e589c5f2cd836eed2a517acbb5e35ff36107c
+
+name:           BuffMuffin
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/githubuser/BuffMuffin#readme>
+homepage:       https://github.com/githubuser/BuffMuffin#readme
+bug-reports:    https://github.com/githubuser/BuffMuffin/issues
+author:         Author name here
+maintainer:     example@example.com
+copyright:      2020 Author name here
+license:        BSD3
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    ChangeLog.md
+
+source-repository head
+  type: git
+  location: https://github.com/githubuser/BuffMuffin
+
+library
+  exposed-modules:
+      Lib
+  other-modules:
+      Paths_BuffMuffin
+  hs-source-dirs:
+      src
+  default-extensions: DataKinds FlexibleContexts GADTs LambdaCase PolyKinds RankNTypes ScopedTypeVariables TypeApplications TypeOperators TypeFamilies
+  build-depends:
+      base >=4.7 && <5
+    , calamity
+    , cond
+    , data-default-class
+    , di-polysemy
+    , generic-lens
+    , lens
+    , polysemy
+    , polysemy-plugin
+    , regex
+    , relude
+    , text
+    , text-show
+  default-language: Haskell2010
+
+executable BuffMuffin-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_BuffMuffin
+  hs-source-dirs:
+      app
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N -fplugin=Polysemy.Plugin
+  build-depends:
+      BuffMuffin
+    , base >=4.7 && <5
+    , calamity
+    , cond
+    , data-default-class
+    , di-polysemy
+    , generic-lens
+    , lens
+    , polysemy
+    , polysemy-plugin
+    , regex
+    , relude
+    , text
+    , text-show
+  default-language: Haskell2010
+
+test-suite BuffMuffin-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_BuffMuffin
+  hs-source-dirs:
+      test
+  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      BuffMuffin
+    , base >=4.7 && <5
+    , calamity
+    , cond
+    , data-default-class
+    , di-polysemy
+    , generic-lens
+    , lens
+    , polysemy
+    , polysemy-plugin
+    , regex
+    , relude
+    , text
+    , text-show
+  default-language: Haskell2010
