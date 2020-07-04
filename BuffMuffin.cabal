@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: ad96ceafff99cf5a2991da9fa5f036482a3b6ad522fedfc47b20278f117e5465
+-- hash: 7bc4f60242c4751112a6404fcd6c2553594ee635c29c03e8d3c39df376e246cb
 
 name:           BuffMuffin
 version:        0.1.0.0
@@ -32,7 +32,6 @@ library
       Paths_BuffMuffin
   hs-source-dirs:
       src
-  default-extensions: DataKinds FlexibleContexts LambdaCase PolyKinds RankNTypes ScopedTypeVariables TypeApplications TypeOperators
   build-depends:
       base >=4.7 && <5
     , calamity
@@ -55,33 +54,7 @@ executable BuffMuffin-exe
       Paths_BuffMuffin
   hs-source-dirs:
       app
-  default-extensions: DataKinds FlexibleContexts LambdaCase PolyKinds RankNTypes ScopedTypeVariables TypeApplications TypeOperators
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N -fplugin=Polysemy.Plugin
-  build-depends:
-      BuffMuffin
-    , base >=4.7 && <5
-    , calamity
-    , cond
-    , data-default-class
-    , di-polysemy
-    , generic-lens
-    , lens
-    , polysemy
-    , polysemy-plugin
-    , regex
-    , relude
-    , text
-    , text-show
-  default-language: Haskell2010
-
-test-suite BuffMuffin-test
-  type: exitcode-stdio-1.0
-  main-is: Spec.hs
-  other-modules:
-      Paths_BuffMuffin
-  hs-source-dirs:
-      test
-  ghc-options: -threaded -rtsopts -with-rtsopts=-N
+  ghc-options: -O2 -fplugin=Polysemy.Plugin -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       BuffMuffin
     , base >=4.7 && <5

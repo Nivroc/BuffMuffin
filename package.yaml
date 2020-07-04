@@ -36,42 +36,14 @@ dependencies:
 
 library:
   source-dirs: src
-  default-extensions:
-    - DataKinds
-    - FlexibleContexts
-    - LambdaCase
-    - PolyKinds
-    - RankNTypes
-    - ScopedTypeVariables
-    - TypeApplications
-    - TypeOperators
 
 executables:
   BuffMuffin-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
-    - -threaded
-    - -rtsopts
-    - -with-rtsopts=-N
+    - -O2
     - -fplugin=Polysemy.Plugin
-    dependencies:
-    - BuffMuffin
-    default-extensions:
-    - DataKinds
-    - FlexibleContexts
-    - LambdaCase
-    - PolyKinds
-    - RankNTypes
-    - ScopedTypeVariables
-    - TypeApplications
-    - TypeOperators
-
-tests:
-  BuffMuffin-test:
-    main:                Spec.hs
-    source-dirs:         test
-    ghc-options:
     - -threaded
     - -rtsopts
     - -with-rtsopts=-N
