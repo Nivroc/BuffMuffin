@@ -36,6 +36,12 @@ dependencies:
 
 library:
   source-dirs: src
+  ghc-options:
+    - -O2
+    - -fplugin=Polysemy.Plugin
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
 
 executables:
   BuffMuffin-exe:

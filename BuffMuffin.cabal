@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7bc4f60242c4751112a6404fcd6c2553594ee635c29c03e8d3c39df376e246cb
+-- hash: c959c526a0b31a99e0ecbaf53d9ea6980dd62cf0a244d6b08c9100187b959b51
 
 name:           BuffMuffin
 version:        0.1.0.0
@@ -32,6 +32,7 @@ library
       Paths_BuffMuffin
   hs-source-dirs:
       src
+  ghc-options: -O2 -fplugin=Polysemy.Plugin -threaded -rtsopts -with-rtsopts=-N
   build-depends:
       base >=4.7 && <5
     , calamity
