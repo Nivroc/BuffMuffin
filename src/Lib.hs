@@ -55,8 +55,8 @@ appConfigFrom = P.interpret \case GetConfig -> pure cfg
         controls = getID <$> ["725657927033028672" :: Text, "711192812682739802"],
         output = getID ("711192812682739802"::Text),
         plusKeys = ["confirm", "plan", "popping", "reset"],
-        minusKeys = ["?", "when", "anyone", "any"],
-        specPlus = [[R.re|\d?\d[.]?\d\d|]],
+        minusKeys = ["?", "when", "anyone", "any", "not sure", "unsure"],
+        specPlus = [[R.re|\d?\d[.]?\s?\d\d|]],
         specMin = [[R.re|Is.*|]],
         password = "havana123"
     }
