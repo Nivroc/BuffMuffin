@@ -39,14 +39,12 @@ library:
   default-extensions:
     - DataKinds
     - FlexibleContexts
-    - GADTs
     - LambdaCase
     - PolyKinds
     - RankNTypes
     - ScopedTypeVariables
     - TypeApplications
     - TypeOperators
-    - TypeFamilies
 
 executables:
   BuffMuffin-exe:
@@ -59,6 +57,15 @@ executables:
     - -fplugin=Polysemy.Plugin
     dependencies:
     - BuffMuffin
+    default-extensions:
+    - DataKinds
+    - FlexibleContexts
+    - LambdaCase
+    - PolyKinds
+    - RankNTypes
+    - ScopedTypeVariables
+    - TypeApplications
+    - TypeOperators
 
 tests:
   BuffMuffin-test:

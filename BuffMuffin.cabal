@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.1.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c06f45142d7c81aa3bc37fc6ea4e589c5f2cd836eed2a517acbb5e35ff36107c
+-- hash: ad96ceafff99cf5a2991da9fa5f036482a3b6ad522fedfc47b20278f117e5465
 
 name:           BuffMuffin
 version:        0.1.0.0
@@ -32,7 +32,7 @@ library
       Paths_BuffMuffin
   hs-source-dirs:
       src
-  default-extensions: DataKinds FlexibleContexts GADTs LambdaCase PolyKinds RankNTypes ScopedTypeVariables TypeApplications TypeOperators TypeFamilies
+  default-extensions: DataKinds FlexibleContexts LambdaCase PolyKinds RankNTypes ScopedTypeVariables TypeApplications TypeOperators
   build-depends:
       base >=4.7 && <5
     , calamity
@@ -55,6 +55,7 @@ executable BuffMuffin-exe
       Paths_BuffMuffin
   hs-source-dirs:
       app
+  default-extensions: DataKinds FlexibleContexts LambdaCase PolyKinds RankNTypes ScopedTypeVariables TypeApplications TypeOperators
   ghc-options: -threaded -rtsopts -with-rtsopts=-N -fplugin=Polysemy.Plugin
   build-depends:
       BuffMuffin

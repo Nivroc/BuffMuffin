@@ -5,6 +5,8 @@
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE QuasiQuotes #-}
+{-# LANGUAGE GADTs #-}
+{-# LANGUAGE TypeFamilies #-}
 
 module Lib where
 
