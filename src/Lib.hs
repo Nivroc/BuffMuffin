@@ -65,9 +65,10 @@ appConfigFrom = P.interpret \case GetConfig -> pure cfg
         sources = getID <$> ["668419602337759253" :: Text, "702560043022811136", "668419781241864192", "725657927033028672"],
         controls = getID <$> ["725657927033028672" :: Text, "711192812682739802"],
         output = getID ("711192812682739802"::Text),
-        plusKeys = [],
+        -- output = getID ("725657927033028672"::Text),
+        plusKeys = ["rend", "wcb"],
         minusKeys = ["?", "when", "anyone", "any", "not sure", "unsure"],
-        specPlus = [[R.re|\d?\d[.]?\s?\d\d|]],
+        specPlus = [[R.re|[0-9]?[0-9][. :]?[0-9][0-9]|], [R.re|in [0-9]?[0-9]|]],
         specMin = [[R.re|Is.*|]],
         password = "havana123"
     }
@@ -96,7 +97,7 @@ tellToId cid msg = P.runError $ do
 
 someFunc :: IO ()
 someFunc = void . P.runFinal . P.embedToFinal . runCacheInMemory . runMetricsNoop . useConstantPrefix "muffin " . appConfigFrom $ 
-    runBotIO (UserToken "NzI1NjU3NjEwODU0MDcyMzcw.XvR7kA.b3ucHp7b186QOnnSYtgjYRBUKFE") $ 
+    runBotIO (UserToken "NzI1NjU3NjEwODU0MDcyMzcw.XwCB5Q.aHBzDdQ_Uvw-9EdgIzI-DmhQsVI") $ 
     do  conf <- getConfig
         react @'MessageCreateEvt $ \msg -> 
             do parsePrefix msg >>= \case
@@ -143,10 +144,5 @@ retranslateOrPass msg output sources = getConfig >>= \conf ->
     where correctSource = getID @Channel msg `elem` sources
           message = (toText $ msg ^. #content)
           alert mess = void $ tellToId output mess
-
-
-
-
-
-                        
+                      
 

@@ -39,7 +39,6 @@ library:
   ghc-options:
     - -O2
     - -fplugin=Polysemy.Plugin
-    - -threaded
     - -rtsopts
     - -with-rtsopts=-N
 
@@ -50,7 +49,6 @@ executables:
     ghc-options:
     - -O2
     - -fplugin=Polysemy.Plugin
-    - -threaded
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
