@@ -62,14 +62,14 @@ appConfigFrom :: P.Sem (GetConfig : r) a -> P.Sem r a
 appConfigFrom = P.interpret \case GetConfig -> pure cfg 
     where cfg = AppConfig {
         myID = getID ("725657610854072370"::Text),
-        sources = getID <$> ["668419602337759253" :: Text, "702560043022811136", "668419781241864192", "725657927033028672"],
+        sources = getID <$> ["668419602337759253" :: Text, "702560043022811136", "668419781241864192", "725657927033028672", "700806643373441064"],
         controls = getID <$> ["725657927033028672" :: Text, "711192812682739802"],
         output = getID ("711192812682739802"::Text),
         -- output = getID ("725657927033028672"::Text),
-        plusKeys = ["rend", "wcb"],
+        plusKeys = ["rend", "wcb", "whisper", "inv"],
         minusKeys = ["?", "when", "anyone", "any", "not sure", "unsure"],
         specPlus = [[R.re|[0-9]?[0-9][. :]?[0-9][0-9]|], [R.re|in [0-9]?[0-9]|]],
-        specMin = [[R.re|Is.*|]],
+        specMin = [[R.re|Is.*|], [R.re|is.*|]],
         password = "havana123"
     }
 {-
