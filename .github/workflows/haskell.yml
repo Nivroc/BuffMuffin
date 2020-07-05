@@ -41,6 +41,8 @@ jobs:
       with:
         name: muffin
         path: /home/runner/work/BuffMuffin/BuffMuffin/dist-newstyle/build/x86_64-linux/ghc-8.8.3/BuffMuffin-0.1.0.0/x/BuffMuffin-exe/build/BuffMuffin-exe/BuffMuffin-exe
+    - name: Remove old binary
+      run: ssh ubuntu@35.158.94.52 '/home/ubuntu/Binaries/BuffMuffin-exe'  
     - name: Upload to Lightsail
       run: scp /home/runner/work/BuffMuffin/BuffMuffin/dist-newstyle/build/x86_64-linux/ghc-8.8.3/BuffMuffin-0.1.0.0/x/BuffMuffin-exe/build/BuffMuffin-exe/BuffMuffin-exe  ubuntu@35.158.94.52:/home/ubuntu/Archive/BuffMuffin-exe
     - name: Run deploy and cleanup
