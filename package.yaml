@@ -40,7 +40,7 @@ library:
     - -O2
     - -fplugin=Polysemy.Plugin
     - -rtsopts
-    - -with-rtsopts=-N
+    - -j1
 
 executables:
   BuffMuffin-exe:
@@ -50,6 +50,6 @@ executables:
     - -O2
     - -fplugin=Polysemy.Plugin
     - -rtsopts
-    - -with-rtsopts=-N
+    - -j1
     dependencies:
     - BuffMuffin

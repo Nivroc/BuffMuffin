@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7508b8edd1b7926f2de2cc53afb5eb9818eaacbaae9e944e0d2820821a9ccbc4
+-- hash: 11ea2b4b6c7acf84cdb10365dc11c67872a65696c56dcebd6881d6119549e614
 
 name:           BuffMuffin
 version:        0.1.0.0
@@ -32,7 +32,7 @@ library
       Paths_BuffMuffin
   hs-source-dirs:
       src
-  ghc-options: -O2 -fplugin=Polysemy.Plugin -rtsopts -with-rtsopts=-N
+  ghc-options: -O2 -fplugin=Polysemy.Plugin -rtsopts -j1
   build-depends:
       base >=4.7 && <5
     , calamity
@@ -55,7 +55,7 @@ executable BuffMuffin-exe
       Paths_BuffMuffin
   hs-source-dirs:
       app
-  ghc-options: -O2 -fplugin=Polysemy.Plugin -rtsopts -with-rtsopts=-N
+  ghc-options: -O2 -fplugin=Polysemy.Plugin -rtsopts -j1
   build-depends:
       BuffMuffin
     , base >=4.7 && <5
