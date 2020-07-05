@@ -46,4 +46,5 @@ jobs:
     - name: Upload to Lightsail
       run: scp -o StrictHostKeyChecking=no /home/runner/work/BuffMuffin/BuffMuffin/dist-newstyle/build/x86_64-linux/ghc-8.8.3/BuffMuffin-0.1.0.0/x/BuffMuffin-exe/build/BuffMuffin-exe/BuffMuffin-exe  ubuntu@35.158.94.52:/home/ubuntu/Archive/BuffMuffin-exe
     - name: Run deploy and cleanup
-      run: ssh -o StrictHostKeyChecking=no ubuntu@35.158.94.52 '/home/ubuntu/Scripts/setupmuffin.sh'                  
+      run: ssh -o StrictHostKeyChecking=no ubuntu@35.158.94.52 '/home/ubuntu/Scripts/setupmuffin.sh'  
+                      
