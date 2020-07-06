@@ -49,7 +49,7 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           sudo systemctl stop muffin.service
-          sudo rm -f ~/Binaries/BuffMuffin-exe
+          sudo rm -f ~/Binaries/github/workspace/dist-newstyle/build/x86_64-linux/ghc-8.8.3/BuffMuffin-0.1.0.0/x/BuffMuffin-exe/build/BuffMuffin-exe/BuffMuffin-exe
     - name: copy file via ssh password
       uses: appleboy/scp-action@master
       with:
@@ -67,7 +67,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
-          sudo chmod +rx ~/Binaries/BuffMuffin-exe
+          sudo chmod +rx ~/Binaries/github/workspace/dist-newstyle/build/x86_64-linux/ghc-8.8.3/BuffMuffin-0.1.0.0/x/BuffMuffin-exe/build/BuffMuffin-exe/BuffMuffin-exe
           sudo systemctl start muffin.service
           sudo systemctl status muffin.service
           
