@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 11ea2b4b6c7acf84cdb10365dc11c67872a65696c56dcebd6881d6119549e614
+-- hash: 09e0ad38dd5becffc2ff7b281f1e58cd039a7f98051c9e35a8ca005571741a77
 
 name:           BuffMuffin
 version:        0.1.0.0
@@ -27,37 +27,15 @@ source-repository head
 
 library
   exposed-modules:
+      Conditions
       Lib
   other-modules:
       Paths_BuffMuffin
   hs-source-dirs:
       src
-  ghc-options: -O2 -fplugin=Polysemy.Plugin -rtsopts -j1
+  ghc-options: -O2 -fplugin=Polysemy.Plugin -j1
   build-depends:
-      base >=4.7 && <5
-    , calamity
-    , cond
-    , data-default-class
-    , di-polysemy
-    , generic-lens
-    , lens
-    , polysemy
-    , polysemy-plugin
-    , regex
-    , relude
-    , text
-    , text-show
-  default-language: Haskell2010
-
-executable BuffMuffin-exe
-  main-is: Main.hs
-  other-modules:
-      Paths_BuffMuffin
-  hs-source-dirs:
-      app
-  ghc-options: -O2 -fplugin=Polysemy.Plugin -rtsopts -j1
-  build-depends:
-      BuffMuffin
+      HUnit
     , base >=4.7 && <5
     , calamity
     , cond
@@ -71,4 +49,61 @@ executable BuffMuffin-exe
     , relude
     , text
     , text-show
+    , time
+    , vector
+  default-language: Haskell2010
+
+executable BuffMuffin-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_BuffMuffin
+  hs-source-dirs:
+      app
+  ghc-options: -O2 -fplugin=Polysemy.Plugin -rtsopts -j1
+  build-depends:
+      BuffMuffin
+    , HUnit
+    , base >=4.7 && <5
+    , calamity
+    , cond
+    , data-default-class
+    , di-polysemy
+    , generic-lens
+    , lens
+    , polysemy
+    , polysemy-plugin
+    , regex
+    , relude
+    , text
+    , text-show
+    , time
+    , vector
+  default-language: Haskell2010
+
+test-suite Learn2-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_BuffMuffin
+  hs-source-dirs:
+      test
+  ghc-options: -O2 -fplugin=Polysemy.Plugin -rtsopts -j1
+  build-depends:
+      BuffMuffin
+    , HUnit
+    , base >=4.7 && <5
+    , calamity
+    , cond
+    , data-default-class
+    , di-polysemy
+    , generic-lens
+    , lens
+    , polysemy
+    , polysemy-plugin
+    , regex
+    , relude
+    , text
+    , text-show
+    , time
+    , vector
   default-language: Haskell2010

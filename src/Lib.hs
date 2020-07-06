@@ -18,6 +18,7 @@
 module Lib where
 
 import           Relude 
+import           Conditions
 
 import           Calamity
 import           Calamity.Metrics.Noop
@@ -49,32 +50,34 @@ data AppConfig = AppConfig {
     sources :: [Snowflake Channel],
     controls :: [Snowflake Channel],
     output :: Snowflake Channel,
-    plusKeys :: [Text],
-    minusKeys :: [Text],
-    specPlus :: [R.RE],
-    specMin :: [R.RE],
+    posCond :: [Condition],
+    negCond :: [Condition],
     password :: Text
 }
+
 
 appConfigFrom :: P.Sem (GetConfig : r) a -> P.Sem r a
 appConfigFrom = P.interpret \case GetConfig -> pure cfg 
     where cfg = AppConfig {
         myID = getID ("725657610854072370"::Text),
-        sources = getID <$> ["668419602337759253" :: Text, "702560043022811136", "668419781241864192", "725657927033028672", "700806643373441064"],
+        sources = getID <$> ["668419602337759253" :: Text, "702560043022811136", "668419781241864192", "700806643373441064"],
         controls = getID <$> ["725657927033028672" :: Text, "711192812682739802"],
         output = getID ("711192812682739802"::Text),
         -- output = getID ("725657927033028672"::Text),
-        plusKeys = ["rend", "wcb", "whisper", "inv"],
-        minusKeys = ["?", "when", "anyone", "any", "not sure", "unsure"],
-        specPlus = [[R.re|[0-9]?[0-9][. :]?[0-9][0-9]|], [R.re|in [0-9]?[0-9]|]],
-        specMin = [[R.re|Is.*|], [R.re|is.*|]],
+        posCond = [
+            anyKeywords ["rend", "wcb", "whisper", "inv"],
+            matchesRegex [R.reMI|[0-9]?[0-9][. :]?[0-9][0-9]|],
+            matchesRegex [R.reMI|[in] [0-9]?[0-9]|]
+        ],
+        negCond = [
+            anyKeywords ["?", "when", "anyone", "any", "not sure", "unsure"],
+            matchesRegex [R.reMI|[is] .*|],
+            hordeWithoutNefOny (getID $ ("668419781241864192" :: Text))
+        ],
         password = "havana123"
     }
-{-
-data Retranslator = Retr { from :: MVar [Channel], to :: MVar Channel}
-data GetRetr m a where
-    GetRetranslator :: GetRetr m Retranslator
-    -}
+    
+
 
 data GetConfig m a where
     GetConfig :: GetConfig m AppConfig
@@ -86,6 +89,8 @@ instance HasID Channel Text where
     getID = coerceSF
 instance HasID User Text where
     getID = coerceSF 
+instance HasID Message Text where
+    getID = coerceSF
 
 tellToId :: forall msg r t. (BotC r) => Snowflake Channel -> Text -> P.Sem r (Either RestError Message)
 tellToId cid msg = P.runError $ do
@@ -95,7 +100,7 @@ tellToId cid msg = P.runError $ do
 
 someFunc :: IO ()
 someFunc = void . P.runFinal . P.embedToFinal . runCacheInMemory . runMetricsNoop . useConstantPrefix "muffin " . appConfigFrom $ 
-    runBotIO (UserToken "NzI1NjU3NjEwODU0MDcyMzcw.XwCB5Q.aHBzDdQ_Uvw-9EdgIzI-DmhQsVI") $ 
+    runBotIO (UserToken "NzI4NDg4ODk4NjY5NDQ1MTUw.XwNO9A.FGcn0HXFf1T2JqN15gI5J7QbjRo") $ 
     do  conf <- getConfig
         react @'MessageCreateEvt $ \msg -> 
             do parsePrefix msg >>= \case
@@ -126,21 +131,11 @@ respondToCommand msg command = getConfig >>= \conf ->
              (if (E.null pwd) then publicCommands cmd else secCommands cmd pwd)
 
 
-
 retranslateOrPass :: (BotC r, P.Member GetConfig r) => Message -> Snowflake Channel -> [Snowflake Channel] -> P.Sem r ()
 retranslateOrPass msg output sources = getConfig >>= \conf -> 
-    let redAlert = correctSource 
-                   && (specialPlus || (getAny $ mconcat $ (Any . ((flip E.isInfixOf) (E.toCaseFold message)) . E.toCaseFold) <$> (plusKeys conf)))
-                   && not (specialMinus || (getAny $ mconcat $ (Any . ((flip E.isInfixOf) (E.toCaseFold message)) . E.toCaseFold) <$> (minusKeys conf)))
-        special lst = getAny $ mconcat $ (Any . matched . (message ?=~)) <$> lst
-        specialPlus = special $ specPlus conf
-        specialMinus = special $ specMin conf
-    in
-    condDefault (pure ()) [
-        (redAlert, alert $ "Alert: " <> message)
-    ]
-    where correctSource = getID @Channel msg `elem` sources
-          message = (toText $ msg ^. #content)
-          alert mess = void $ tellToId output mess
-                      
+    let retranslate m = passthrough m (posCond conf) (negCond conf)
+        message = toText $ msg ^. #content
+        correctSource = getID @Channel msg `elem` sources
+    in when (correctSource && retranslate msg ) (void $ tellToId output ("Alert: " <> message))
+
 
