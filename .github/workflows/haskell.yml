@@ -49,8 +49,8 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
-          systemctl stop muffin.service
-          rm /home/ubuntu/Archive/BuffMuffin-exe
+          sudo systemctl stop muffin.service
+          sudo rm /home/ubuntu/Archive/BuffMuffin-exe
     - name: copy file via ssh password
       uses: appleboy/scp-action@master
       with:
@@ -68,7 +68,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
-          systemctl start muffin.service
-          systemctl status muffin.service
+          sudo systemctl start muffin.service
+          sudo systemctl status muffin.service
           
           
