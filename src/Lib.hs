@@ -69,7 +69,7 @@ appConfigFrom = P.interpret \case GetConfig -> pure cfg
         plusKeys = ["rend", "wcb"],
         minusKeys = ["?", "when", "anyone", "any", "not sure", "unsure"],
         specPlus = [[R.re|[0-9]?[0-9][. :]?[0-9][0-9]|], [R.re|in [0-9]?[0-9]|]],
-        specMin = [[R.re|Is.*|]],
+        specMin = [[R.re|[Is|is].*|]],
         password = "havana123"
     }
 {-
@@ -144,5 +144,7 @@ retranslateOrPass msg output sources = getConfig >>= \conf ->
     where correctSource = getID @Channel msg `elem` sources
           message = (toText $ msg ^. #content)
           alert mess = void $ tellToId output mess
+
+testregexp = matched  $ "dropping ony in 5" ?=~ [R.re|in [0-9]?[0-9]|]
                       
 
