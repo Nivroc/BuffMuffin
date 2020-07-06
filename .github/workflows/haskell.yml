@@ -40,11 +40,6 @@ jobs:
     - name: Run tests
       run: cabal test all
     - run: ls /home/runner/work/BuffMuffin/BuffMuffin/dist-newstyle/build/x86_64-linux/ghc-8.8.3/BuffMuffin-0.1.0.0/x/BuffMuffin-exe/build/BuffMuffin-exe/
-    - name: Upload the artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: muffin
-        path: /home/runner/work/BuffMuffin/BuffMuffin/dist-newstyle/build/x86_64-linux/ghc-8.8.3/BuffMuffin-0.1.0.0/x/BuffMuffin-exe/build/BuffMuffin-exe/BuffMuffin-exe
     - name: Stop muffin on host
       uses: appleboy/ssh-action@master
       with:
