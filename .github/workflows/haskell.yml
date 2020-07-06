@@ -41,7 +41,7 @@ jobs:
       with:
         name: muffin
         path: /home/runner/work/BuffMuffin/BuffMuffin/dist-newstyle/build/x86_64-linux/ghc-8.8.3/BuffMuffin-0.1.0.0/x/BuffMuffin-exe/build/BuffMuffin-exe/BuffMuffin-exe
-    - name: executing remote ssh commands using password
+    - name: Stop muffin on host
       uses: appleboy/ssh-action@master
       with:
         host: ${{ secrets.HOST }}
@@ -49,5 +49,26 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         script: |
-          echo 'hello' 
-          echo 'hello'      
+          systemctl stop muffin.service
+          rm /home/ubuntu/Archive/BuffMuffin-exe
+    - name: copy file via ssh password
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        source: "/home/runner/work/BuffMuffin/BuffMuffin/dist-newstyle/build/x86_64-linux/ghc-8.8.3/BuffMuffin-0.1.0.0/x/BuffMuffin-exe/build/BuffMuffin-exe/BuffMuffin-exe"
+        target: "/home/ubuntu/Archive/BuffMuffin-exe"
+    - name: Start muffin on host
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        password: ${{ secrets.PASSWORD }}
+        port: ${{ secrets.PORT }}
+        script: |
+          systemctl start muffin.service
+          systemctl status muffin.service
+          
+          
