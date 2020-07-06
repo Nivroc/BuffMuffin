@@ -67,6 +67,7 @@ jobs:
         port: ${{ secrets.PORT }}
         script: |
           sudo chmod +rx ~/Binaries/github/workspace/dist-newstyle/build/x86_64-linux/ghc-8.8.3/BuffMuffin-0.1.0.0/x/BuffMuffin-exe/build/BuffMuffin-exe/BuffMuffin-exe
+          sudo systemctl daemon-reload
           sudo systemctl start muffin.service
           sudo systemctl status muffin.service
           
