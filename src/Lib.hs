@@ -139,6 +139,8 @@ retranslateOrPass msg output sources = getConfig >>= \conf ->
     let retranslate m = passthrough m (posCond conf) (negCond conf)
         message = toText $ msg ^. #content
         correctSource = getID @Channel msg `elem` sources
-    in when (correctSource && retranslate msg ) (void $ tellToId output ("Alert: " <> message))
+    in if (correctSource && (anyKeywords ["rend"] msg) && (not $ hordeWithoutNefOny (getID $ ("668419781241864192" :: Text)) msg))
+       then void $ tellToId output ("@WCB Buff Muffins Possible Rend Alert: " <> message)
+       else when (correctSource && retranslate msg ) (void $ tellToId output ("Alert: " <> message))
 
 
