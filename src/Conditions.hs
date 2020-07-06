@@ -42,11 +42,10 @@ containsRegex r msg = matched $ toText (msg ^. #content) ?=~ r
 
 uncontainsRegex = (not .) . containsRegex
 
-matchesRegex :: R.RE -> Condition
-matchesRegex r msg = matched $ toText (msg ^. #content) ?=~ r
-
 -- custom conditions
 
 hordeWithoutNefOny hordechan = uncurry (&&) . (fromChannel hordechan &&& anyKeywords ["nef", "ony"])
+
+havanaRoomMention guild = uncurry (&&) . (fromGuild guild &&& anyKeywords ["Havana Room", "HR"])
 
 try = (, True) <$> [1,2,3]

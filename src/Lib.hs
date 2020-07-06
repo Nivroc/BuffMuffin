@@ -66,12 +66,13 @@ appConfigFrom = P.interpret \case GetConfig -> pure cfg
         -- output = getID ("725657927033028672"::Text),
         posCond = [
             anyKeywords ["rend", "wcb", "whisper", "inv"],
-            matchesRegex [R.reMI|[0-9]?[0-9][. :]?[0-9][0-9]|],
-            matchesRegex [R.reMI|[in] [0-9]?[0-9]|]
+            containsRegex [R.reMI|[0-9]?[0-9][. :]?[0-9][0-9]|],
+            containsRegex [R.reMI|[in] [0-9]?[0-9]|],
+            havanaRoomMention (getID $ ("609639269459427339" :: Text))
         ],
         negCond = [
             anyKeywords ["?", "when", "anyone", "any", "not sure", "unsure"],
-            matchesRegex [R.reMI|[is] .*|],
+            containsRegex [R.reMI|[is] .*|],
             hordeWithoutNefOny (getID $ ("668419781241864192" :: Text))
         ],
         password = "havana123"
@@ -91,6 +92,8 @@ instance HasID User Text where
     getID = coerceSF 
 instance HasID Message Text where
     getID = coerceSF
+instance HasID Guild Text where
+    getID = coerceSF
 
 tellToId :: forall msg r t. (BotC r) => Snowflake Channel -> Text -> P.Sem r (Either RestError Message)
 tellToId cid msg = P.runError $ do
@@ -100,7 +103,7 @@ tellToId cid msg = P.runError $ do
 
 someFunc :: IO ()
 someFunc = void . P.runFinal . P.embedToFinal . runCacheInMemory . runMetricsNoop . useConstantPrefix "muffin " . appConfigFrom $ 
-    runBotIO (UserToken "NzI4NDg4ODk4NjY5NDQ1MTUw.XwNO9A.FGcn0HXFf1T2JqN15gI5J7QbjRo") $ 
+    runBotIO (UserToken "NzI1NjU3NjEwODU0MDcyMzcw.XwCB5Q.aHBzDdQ_Uvw-9EdgIzI-DmhQsVI") $ 
     do  conf <- getConfig
         react @'MessageCreateEvt $ \msg -> 
             do parsePrefix msg >>= \case
