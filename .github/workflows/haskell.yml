@@ -59,7 +59,7 @@ jobs:
         password: ${{ secrets.PASSWORD }}
         port: ${{ secrets.PORT }}
         source: "/home/runner/work/BuffMuffin/BuffMuffin/dist-newstyle/build/x86_64-linux/ghc-8.8.3/BuffMuffin-0.1.0.0/x/BuffMuffin-exe/build/BuffMuffin-exe/BuffMuffin-exe"
-        target: "~/Binaries/BuffMuffin-exe"
+        target: "~/Binaries/"
     - name: Start muffin on host
       uses: appleboy/ssh-action@master
       with:
