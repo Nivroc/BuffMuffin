@@ -33,13 +33,15 @@ dependencies:
 - cond
 - data-default-class
 - regex
+- vector
+- time
+- HUnit
 
 library:
   source-dirs: src
   ghc-options:
     - -O2
     - -fplugin=Polysemy.Plugin
-    - -rtsopts
     - -j1
 
 executables:
@@ -53,3 +55,16 @@ executables:
     - -j1
     dependencies:
     - BuffMuffin
+
+
+tests:
+  Learn2-test:
+    source-dirs: test
+    main: Spec.hs
+    ghc-options:
+      - -O2
+      - -fplugin=Polysemy.Plugin
+      - -rtsopts
+      - -j1
+    dependencies:
+      - BuffMuffin
