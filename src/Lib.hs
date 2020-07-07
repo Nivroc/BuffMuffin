@@ -68,21 +68,27 @@ outToFile path = P.interpret \case
 appConfigFrom :: P.Sem (GetConfig : r) a -> P.Sem r a
 appConfigFrom = P.interpret \case GetConfig -> pure cfg 
     where cfg = AppConfig {
-        myID = getID ("725657610854072370"::Text),
-        sources = getID <$> ["668419602337759253" :: Text, "702560043022811136", "668419781241864192", "700806643373441064"],
-        controls = getID <$> ["725657927033028672" :: Text, "711192812682739802"],
-        output = getID ("711192812682739802"::Text),
-        -- output = getID ("725657927033028672"::Text),
+        -- myID = getID ("725657610854072370"::Text),
+        -- sources = getID <$> ["668419602337759253" :: Text, "702560043022811136", "668419781241864192", "700806643373441064"],
+        -- controls = getID <$> ["725657927033028672" :: Text, "711192812682739802"],
+        -- output = getID ("711192812682739802"::Text),
+        myID = getID ("728488898669445150"::Text),
+        sources = getID <$> ["725657927033028672" :: Text, "725657952400441374"],
+        controls = getID <$> ["725657927033028672" :: Text],
+        output = getID ("725657927033028672"::Text),
         posCond = [
             anyKeywords ["rend", "wcb", "whisper", "inv"],
             containsRegex [R.reMI|[0-9]?[0-9][. :]?[0-9][0-9]|],
             containsRegex [R.reMI|[in] [0-9]?[0-9]|],
-            havanaRoomMention (getID $ ("609639269459427339" :: Text))
+            --havanaRoomMention (getID $ ("609639269459427339" :: Text))
+            havanaRoomMention (getID $ ("725657927033028669" :: Text))
+
         ],
         negCond = [
             anyKeywords ["?", "when", "anyone", "any", "not sure", "unsure"],
             containsRegex [R.reMI|[is] .*|],
-            hordeWithoutNefOny (getID $ ("668419781241864192" :: Text))
+            --hordeWithoutNefOny (getID $ ("668419781241864192" :: Text))
+            hordeWithoutNefOny (getID $ ("725657952400441374" :: Text))
         ],
         password = "havana123"
     }
@@ -112,7 +118,8 @@ tellToId cid msg = P.runError $ do
 
 someFunc :: IO ()
 someFunc = void . P.runFinal . P.embedToFinal . runCacheInMemory . runMetricsNoop . Lib.outToFile "./logs/" . useConstantPrefix "muffin " . appConfigFrom $ 
-    runBotIO (UserToken "NzI1NjU3NjEwODU0MDcyMzcw.XwCB5Q.aHBzDdQ_Uvw-9EdgIzI-DmhQsVI") $ 
+    -- runBotIO (UserToken "NzI1NjU3NjEwODU0MDcyMzcw.XwCB5Q.aHBzDdQ_Uvw-9EdgIzI-DmhQsVI") $ 
+    runBotIO (UserToken "NzI4NDg4ODk4NjY5NDQ1MTUw.XwNO9A.FGcn0HXFf1T2JqN15gI5J7QbjRo")
     do  conf <- getConfig
         react @'MessageCreateEvt $ \msg -> 
             do parsePrefix msg >>= \case
@@ -151,10 +158,10 @@ retranslateOrPass msg output sources = getConfig >>= \conf ->
         correctSource = getID @Channel msg `elem` sources
     in when (correctSource && retranslate msg )
         (do 
+            if (fromChannel (getID $ ("725657952400441374" :: Text)) msg)
+            then void $ tellToId output ("Possible Rend Alert: " <> message)
+            else void $ tellToId output ("Alert: " <> message)
             when (containsRegex [R.reMI|[0-9]?[0-9][. :]?[0-9][0-9]|] msg)
                  (void $ P.output msg)
-            if (fromChannel (getID $ ("668419781241864192" :: Text)) msg)
-            then void $ tellToId output ("@WCB Buff Muffins Possible Rend Alert: " <> message)
-            else void $ tellToId output ("Alert: " <> message)
         )
 
