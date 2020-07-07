@@ -59,18 +59,33 @@ main = print "tests passed"
 main :: IO ()
 main = runTestTT tests >>= print
    
-tests = TestList [TestLabel "test1" test1]
+tests = TestList [TestLabel "Positive" test1, TestLabel "Negative" test2]
 
 test1 = TestCase $ do
     time <- getCurrentTime
-    result1 <- checkMessageContent $ ("rend pop":: LText)
-    result2 <- checkMessageContent $ ("wtb WCB buff":: LText)
-    result3 <- checkMessageContent $ ("whisper me for DMT":: LText)
-    result4 <- checkMessageContent $ ("inv to whatever xD":: LText)
+    result1 <- checkMessageContent  ("rend pop":: LText)
+    result2 <- checkMessageContent  ("wtb WCB buff":: LText)
+    result3 <- checkMessageContent  ("whisper me for DMT":: LText)
+    result4 <- checkMessageContent  ("inv to whatever xD":: LText)
+    result5 <- checkMessageContent  ("ony buff at 19.20":: LText)
     assertEqual "rend pop" True result1
     assertEqual "wtb WCB buff" True result2
     assertEqual "whisper me for DMT" True result3
     assertEqual "inv to whatever xD" True result4
+    assertEqual "ony buff at 19.20" True result4
+
+test2 = TestCase $ do
+    time <- getCurrentTime
+    result1 <- checkMessageContent  ("Any pops today":: LText)
+    result2 <- checkMessageContent  ("popping now?":: LText)
+    result3 <- checkMessageContent  ("not sure about any buffs":: LText)
+    result4 <- checkMessageContent  ("whens heart popping":: LText)
+    result5 <- checkMessageContent  ("ony buff at 19.20?":: LText)
+    assertEqual "Any pops today" False result1
+    assertEqual "popping now?" False result2
+    assertEqual "not sure about any buffs" False result3
+    assertEqual "whens heart popping" False result4
+    assertEqual "ony buff at 19.20?" False result4
 
 checkMessageContent :: LText -> IO Bool
 checkMessageContent content = do

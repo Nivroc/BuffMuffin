@@ -29,6 +29,7 @@ import           Calamity.Types.Model.User
 
 import qualified Polysemy                                   as P
 import qualified Polysemy.Reader                            as P
+import qualified Polysemy.Output                            as P
 import qualified Polysemy.Error                             as P
 
 import           Control.Lens
@@ -42,6 +43,7 @@ import qualified Data.Text                                  as E
 import           Data.Complex
 import           Data.Default.Class
 import           Data.Monoid
+import           Data.Time.Clock
 
 import           Text.RE.TDFA.Text                          as R
 
@@ -54,6 +56,13 @@ data AppConfig = AppConfig {
     negCond :: [Condition],
     password :: Text
 }
+
+outToFile :: (P.Member (P.Embed IO) r) => FilePath -> (P.Sem (P.Output Message : r) a) -> P.Sem r a
+outToFile path = P.interpret \case 
+    P.Output mess -> 
+        let time = mess ^. #timestamp
+            content = mess ^. #content
+        in P.embed $ appendFile (path <> (show $ utctDay time) <> ".txt") ("\n" <> (toString content))
 
 
 appConfigFrom :: P.Sem (GetConfig : r) a -> P.Sem r a
@@ -102,7 +111,7 @@ tellToId cid msg = P.runError $ do
   where prnt flake = (show $ fromSnowflake $ flake) :: Text
 
 someFunc :: IO ()
-someFunc = void . P.runFinal . P.embedToFinal . runCacheInMemory . runMetricsNoop . useConstantPrefix "muffin " . appConfigFrom $ 
+someFunc = void . P.runFinal . P.embedToFinal . runCacheInMemory . runMetricsNoop . Lib.outToFile "". useConstantPrefix "muffin " . appConfigFrom $ 
     runBotIO (UserToken "NzI1NjU3NjEwODU0MDcyMzcw.XwCB5Q.aHBzDdQ_Uvw-9EdgIzI-DmhQsVI") $ 
     do  conf <- getConfig
         react @'MessageCreateEvt $ \msg -> 
@@ -134,13 +143,18 @@ respondToCommand msg command = getConfig >>= \conf ->
              (if (E.null pwd) then publicCommands cmd else secCommands cmd pwd)
 
 
-retranslateOrPass :: (BotC r, P.Member GetConfig r) => Message -> Snowflake Channel -> [Snowflake Channel] -> P.Sem r ()
+retranslateOrPass :: (BotC r, P.Member GetConfig r, P.Member (P.Output Message) r) => 
+    Message -> Snowflake Channel -> [Snowflake Channel] -> P.Sem r ()
 retranslateOrPass msg output sources = getConfig >>= \conf -> 
     let retranslate m = passthrough m (posCond conf) (negCond conf)
         message = toText $ msg ^. #content
         correctSource = getID @Channel msg `elem` sources
-    in if (correctSource && (anyKeywords ["rend"] msg) && (not $ hordeWithoutNefOny (getID $ ("668419781241864192" :: Text)) msg))
-       then void $ tellToId output ("@WCB Buff Muffins Possible Rend Alert: " <> message)
-       else when (correctSource && retranslate msg ) (void $ tellToId output ("Alert: " <> message))
-
+    in when (correctSource && retranslate msg )
+        (do 
+            when (containsRegex [R.reMI|[0-9]?[0-9][. :]?[0-9][0-9]|] msg)
+                 (void $ P.output msg)
+            if (fromChannel (getID $ ("668419781241864192" :: Text)) msg)
+            then void $ tellToId output ("@WCB Buff Muffins Possible Rend Alert: " <> message)
+            else void $ tellToId output ("Alert: " <> message)
+        )
 
