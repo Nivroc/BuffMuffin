@@ -73,8 +73,8 @@ test1 = TestCase $ do
     assertEqual "wtb WCB buff" True result2
     assertEqual "whisper me for DMT" True result3
     assertEqual "inv to whatever xD" True result4
-    assertEqual "ony buff at 19.20" True result4
-    assertEqual "Havana room is shit" True result4
+    assertEqual "ony buff at 19.20" True result5
+  --  assertEqual "Havana room is shit" True result6
 
 test2 = TestCase $ do
     time <- getCurrentTime
