@@ -175,7 +175,7 @@ retranslateOrPass msg output sources = getConfig >>= \conf ->
         correctSource = getID @Channel msg `elem` sources
     in when (correctSource && retranslate msg )
         (do 
-            if (fromChannel (getID $ ("668419781241864192" :: Text)) msg)
+            if ((fromChannel (getID $ ("668419781241864192" :: Text)) msg) && anyKeywords ["rend"] msg)
             --if (fromChannel (getID $ ("725657952400441374" :: Text)) msg)
             then void $ tellToId output ("<@&721396284061122560>Possible Rend Alert: " <> message) 
                     (Just (set #roles [(getID $ ("721396284061122560" :: Text))] def))
