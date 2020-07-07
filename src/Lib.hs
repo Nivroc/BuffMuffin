@@ -31,6 +31,7 @@ import qualified Polysemy                                   as P
 import qualified Polysemy.Reader                            as P
 import qualified Polysemy.Output                            as P
 import qualified Polysemy.Error                             as P
+import qualified Polysemy.Input                             as P
 
 import           Control.Lens
 import           Control.Concurrent.MVar
@@ -63,6 +64,12 @@ outToFile path = P.interpret \case
         let time = mess ^. #timestamp
             content = mess ^. #content
         in P.embed $ appendFile (path <> (show $ utctDay time) <> ".txt") ("\n" <> (toString content))
+
+inputFromFile :: (P.Member (P.Embed IO) r) => FilePath -> (P.Sem (P.Input Text : r) a) -> P.Sem r a
+inputFromFile path = P.interpret \case 
+    P.Input -> do time <- P.embed getCurrentTime    
+                  result <- P.embed $ readFile (path <> (show $ utctDay time) <> ".txt") 
+                  return $ toText result
 
 
 appConfigFrom :: P.Sem (GetConfig : r) a -> P.Sem r a
@@ -117,7 +124,8 @@ tellToId cid msg = P.runError $ do
   where prnt flake = (show $ fromSnowflake $ flake) :: Text
 
 someFunc :: IO ()
-someFunc = void . P.runFinal . P.embedToFinal . runCacheInMemory . runMetricsNoop . Lib.outToFile "/tmp/logs/" . useConstantPrefix "muffin " . appConfigFrom $ 
+someFunc = void . P.runFinal . P.embedToFinal . runCacheInMemory . runMetricsNoop . 
+            Lib.outToFile "/tmp/logs/" . Lib.inputFromFile "/tmp/logs/" . useConstantPrefix "muffin " . appConfigFrom $ 
     -- runBotIO (UserToken "NzI1NjU3NjEwODU0MDcyMzcw.XwCB5Q.aHBzDdQ_Uvw-9EdgIzI-DmhQsVI") $ 
     runBotIO (UserToken "NzI4NDg4ODk4NjY5NDQ1MTUw.XwNO9A.FGcn0HXFf1T2JqN15gI5J7QbjRo")
     do  conf <- getConfig
@@ -129,7 +137,8 @@ someFunc = void . P.runFinal . P.embedToFinal . runCacheInMemory . runMetricsNoo
                     when (getID @User msg /= myID conf) (void $ retranslateOrPass msg (output conf) (sources conf))
     
 
-respondToCommand :: (BotC r, Tellable msg, P.Member GetConfig r, HasID Channel msg) => msg -> LText -> P.Sem r ()
+respondToCommand :: (BotC r, Tellable msg, P.Member GetConfig r, P.Member (P.Input Text) r, HasID Channel msg) => 
+                    msg -> LText -> P.Sem r ()
 respondToCommand msg command = getConfig >>= \conf -> 
     let 
         secCommands cmd pwd = when (pwd == (password conf))  
@@ -140,6 +149,8 @@ respondToCommand msg command = getConfig >>= \conf ->
                                 "hello" -> void $ tell msg ("Hey there ;)" :: Text)
                                 "heal" -> void $ tell msg ("HEAL NIVROC!!!111" :: Text)
                                 "help" -> void $ tell msg ("Only God can help you..." :: Text)
+                                "today" -> do text <- P.input
+                                              void $ tell msg ("Here's what I got today: \n" <> text)
                                 _ -> void $ tell msg ("Hey, I don't know( Maybe you can teach me?" :: Text)                  
     in do
         let (cmd, pwd) = case words $ toText command of
@@ -151,7 +162,7 @@ respondToCommand msg command = getConfig >>= \conf ->
 
 
 retranslateOrPass :: (BotC r, P.Member GetConfig r, P.Member (P.Output Message) r) => 
-    Message -> Snowflake Channel -> [Snowflake Channel] -> P.Sem r ()
+                     Message -> Snowflake Channel -> [Snowflake Channel] -> P.Sem r ()
 retranslateOrPass msg output sources = getConfig >>= \conf -> 
     let retranslate m = passthrough m (posCond conf) (negCond conf)
         message = toText $ msg ^. #content
