@@ -26,6 +26,7 @@ import           Calamity.Cache.InMemory
 import           Calamity.Commands
 import qualified Calamity.Commands.Context                  as CommandContext
 import           Calamity.Types.Model.User
+import           Calamity.HTTP.Channel                      as C
 
 import qualified Polysemy                                   as P
 import qualified Polysemy.Reader                            as P
@@ -116,12 +117,18 @@ instance HasID Message Text where
     getID = coerceSF
 instance HasID Guild Text where
     getID = coerceSF
+instance HasID Role Text where
+    getID = coerceSF
 
-tellToId :: forall msg r t. (BotC r) => Snowflake Channel -> Text -> P.Sem r (Either RestError Message)
-tellToId cid msg = P.runError $ do
-  r <- invoke $ CreateMessage (prnt cid) (#content .~ (Just msg) $ def)
+tellToId :: forall msg r t. (BotC r) => 
+    Snowflake Channel -> Text -> Maybe C.AllowedMentions -> P.Sem r (Either RestError Message)
+tellToId cid msg roles = P.runError $ do
+  let messopts = #content .~ (Just msg) $ def 
+  let withroles = #allowedMentions .~ roles $ messopts
+  r <- invoke $ CreateMessage (prnt cid) messopts
   P.fromEither r
   where prnt flake = (show $ fromSnowflake $ flake) :: Text
+
 
 someFunc :: IO ()
 someFunc = void . P.runFinal . P.embedToFinal . runCacheInMemory . runMetricsNoop . 
@@ -160,7 +167,6 @@ respondToCommand msg command = getConfig >>= \conf ->
         when (getID @Channel msg `elem` (controls conf) )
              (if (E.null pwd) then publicCommands cmd else secCommands cmd pwd)
 
-
 retranslateOrPass :: (BotC r, P.Member GetConfig r, P.Member (P.Output Message) r) => 
                      Message -> Snowflake Channel -> [Snowflake Channel] -> P.Sem r ()
 retranslateOrPass msg output sources = getConfig >>= \conf -> 
@@ -170,8 +176,10 @@ retranslateOrPass msg output sources = getConfig >>= \conf ->
     in when (correctSource && retranslate msg )
         (do 
             if (fromChannel (getID $ ("668419781241864192" :: Text)) msg)
-            then void $ tellToId output ("Possible Rend Alert: " <> message)
-            else void $ tellToId output ("Alert: " <> message)
+            --if (fromChannel (getID $ ("725657952400441374" :: Text)) msg)
+            then void $ tellToId output ("<@&721396284061122560>Possible Rend Alert: " <> message) 
+                    (Just (set #roles [(getID $ ("721396284061122560" :: Text))] def))
+            else void $ tellToId output ("Alert: " <> message) Nothing
             when (containsRegex [R.reMI|[0-9]?[0-9][. :]?[0-9][0-9]|] msg)
                  (void $ P.output msg)
         )

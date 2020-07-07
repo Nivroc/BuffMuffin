@@ -54,8 +54,8 @@ import           Text.RE.TDFA.Text                          as R
 import           Lib
 import           Conditions
 
-main = print "tests passed"
-{-
+--main = print "tests passed"
+
 main :: IO ()
 main = runTestTT tests >>= print
    
@@ -83,11 +83,13 @@ test2 = TestCase $ do
     result3 <- checkMessageContent  ("not sure about any buffs":: LText)
     result4 <- checkMessageContent  ("whens heart popping":: LText)
     result5 <- checkMessageContent  ("ony buff at 19.20?":: LText)
+    result6 <- checkMessageContent  ("find someone with a head :4head:":: LText)
     assertEqual "Any pops today" False result1
     assertEqual "popping now?" False result2
     assertEqual "not sure about any buffs" False result3
     assertEqual "whens heart popping" False result4
-    assertEqual "ony buff at 19.20?" False result4
+    assertEqual "ony buff at 19.20?" False result5
+    assertEqual "find someone with a head :4head:" False result6
 
 checkMessageContent :: LText -> IO Bool
 checkMessageContent content = do
@@ -108,6 +110,7 @@ defMess time content = M.Message{
     M.mentionEveryone = False,
     M.mentions = T.empty,
     M.mentionRoles = T.empty,
+    M.mentionChannels = Nothing,
     M.attachments = [],
     M.embeds = [],
     M.reactions = [],
@@ -116,5 +119,5 @@ defMess time content = M.Message{
     M.webhookID = Nothing, 
     M.type_ = M.Default
 } 
--}
+
     

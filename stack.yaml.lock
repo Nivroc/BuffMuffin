@@ -5,12 +5,12 @@
 
 packages:
 - completed:
-    hackage: calamity-0.1.13.0@sha256:5f0a610d330e0b47e702b6f3395a9d15d468441e9f946235b739c8cbbe18461e,6553
+    hackage: calamity-0.1.17.1@sha256:7185468fc6d26c0e8c8ab5cd32871986ec45a139f2925d8ccd31cf62fe5f08b5,6687
     pantry-tree:
-      size: 8000
-      sha256: 5ce86d714da218e82f8950f643bd097a9131d71a384b52879c75365e2366d63f
+      size: 8147
+      sha256: f1054773b85a407eb58ddcb684cdb36d79326a11998f0dda65eebac56db00865
   original:
-    hackage: calamity-0.1.13.0@sha256:5f0a610d330e0b47e702b6f3395a9d15d468441e9f946235b739c8cbbe18461e,6553
+    hackage: calamity-0.1.17.1@sha256:7185468fc6d26c0e8c8ab5cd32871986ec45a139f2925d8ccd31cf62fe5f08b5,6687
 - completed:
     hackage: emoji-0.1.0.2@sha256:d995572a5c7dcd28f98eb15c6e387a7b3bda1ac2477ab0d9dba8580d5d7b161f,1273
     pantry-tree:
@@ -40,12 +40,12 @@ packages:
   original:
     hackage: df1-0.4@sha256:b430ee7e0abda6ce9ef03b9fbe532a7384e6de1b4873357cc116db9f614ce398,1104
 - completed:
-    hackage: di-polysemy-0.1.3.1@sha256:f570cf6cdb0a0ef9dc903a3a7699a4c3246778e717e5f533bb96e18a8c9d1555,2160
+    hackage: di-polysemy-0.1.4.0@sha256:32b907dbfdfa95cc596c62165f3d4dda63f8dfdcb1262688af9c3ca1fc1b42b8,2160
     pantry-tree:
       size: 320
-      sha256: 201f2aea9391f7419f53a9afb373ee02d3e7d8b64ad6b0b92c3d2c1ae1ae598a
+      sha256: f2d708201dc6403c5e8601b49d568a4c19667d03a7e21f310ee8a28e9f1c7b37
   original:
-    hackage: di-polysemy-0.1.3.1@sha256:f570cf6cdb0a0ef9dc903a3a7699a4c3246778e717e5f533bb96e18a8c9d1555,2160
+    hackage: di-polysemy-0.1.4.0@sha256:32b907dbfdfa95cc596c62165f3d4dda63f8dfdcb1262688af9c3ca1fc1b42b8,2160
 - completed:
     hackage: generic-override-0.0.0.0@sha256:4022243b06e2f225a5d09c54e26a3f545f6bc5cce07a7a8267d10fa64344a189,924
     pantry-tree:
