@@ -46,6 +46,6 @@ uncontainsRegex = (not .) . containsRegex
 
 hordeWithoutNefOny hordechan = uncurry (&&) . (fromChannel hordechan &&& anyKeywords ["nef", "ony"])
 
-havanaRoomMention guild = uncurry (&&) . (fromGuild guild &&& anyKeywords ["Havana Room", "HR"])
+havanaRoomMention guild = uncurry (&&) . (fromGuild guild &&& anyKeywords ["Havana Room", "HR "])
 
 try = (, True) <$> [1,2,3]

@@ -85,7 +85,7 @@ appConfigFrom = P.interpret \case GetConfig -> pure cfg
         --controls = getID <$> ["725657927033028672" :: Text],
         --output = getID ("725657927033028672"::Text),
         posCond = [
-            anyKeywords ["rend", "wcb", "whisper", "inv"],
+            anyKeywords ["rend ", "wcb ", "whisper", "inv", "warning", "/w "],
             containsRegex [R.reMI|[0-9]?[0-9][. :]?[0-9][0-9]|],
             containsRegex [R.reMI|in [0-9]?[0-9]|],
             havanaRoomMention (getID $ ("609639269459427339" :: Text))
@@ -93,7 +93,7 @@ appConfigFrom = P.interpret \case GetConfig -> pure cfg
 
         ],
         negCond = [
-            anyKeywords ["?", "when", "anyone", "not sure", "unsure"],
+            anyKeywords ["?", "when", "anyone", "not sure", "unsure", "plz ", "pls ", "please"],
          --   containsRegex [R.reMI|is .*|],
             hordeWithoutNefOny (getID $ ("668419781241864192" :: Text))
             --hordeWithoutNefOny (getID $ ("725657952400441374" :: Text))

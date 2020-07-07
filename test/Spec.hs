@@ -68,13 +68,14 @@ test1 = TestCase $ do
     result3 <- checkMessageContent  ("whisper me for DMT":: LText)
     result4 <- checkMessageContent  ("inv to whatever xD":: LText)
     result5 <- checkMessageContent  ("ony buff at 19.20":: LText)
-    result6 <- checkMessageContent  ("Havana room is shit":: LText)
+    result6 <- checkMessageContent  ("Next on the lineup is :\n\n19:10 - Onyxia head by @<Quantum> Tsusaka\n\n19:30 - <Chaos Knights> Planned Nefarian head":: LText)
     assertEqual "rend pop" True result1
     assertEqual "wtb WCB buff" True result2
     assertEqual "whisper me for DMT" True result3
     assertEqual "inv to whatever xD" True result4
     assertEqual "ony buff at 19.20" True result5
-  --  assertEqual "Havana room is shit" True result6
+    assertEqual "ony buff at 19.20" True result6
+
 
 test2 = TestCase $ do
     time <- getCurrentTime
