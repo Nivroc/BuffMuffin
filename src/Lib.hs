@@ -148,7 +148,7 @@ respondToCommand msg command = getConfig >>= \conf ->
         publicCommands cmd = case cmd of
                                 "hello" -> void $ tell msg ("Hey there ;)" :: Text)
                                 "heal" -> void $ tell msg ("HEAL NIVROC!!!111" :: Text)
-                                "help" -> void $ tell msg ("Only God can help you..." :: Text)
+                                "help" -> void $ tell msg ("Currently I have:\n - help command to see if I'm awake\n - today command to check for todays buffs" :: Text)
                                 "today" -> do text <- P.input
                                               void $ tell msg ("Here's what I got today: \n" <> text)
                                 _ -> void $ tell msg ("Hey, I don't know( Maybe you can teach me?" :: Text)                  
