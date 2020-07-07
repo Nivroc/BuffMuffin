@@ -111,7 +111,7 @@ tellToId cid msg = P.runError $ do
   where prnt flake = (show $ fromSnowflake $ flake) :: Text
 
 someFunc :: IO ()
-someFunc = void . P.runFinal . P.embedToFinal . runCacheInMemory . runMetricsNoop . Lib.outToFile "". useConstantPrefix "muffin " . appConfigFrom $ 
+someFunc = void . P.runFinal . P.embedToFinal . runCacheInMemory . runMetricsNoop . Lib.outToFile "./logs/" . useConstantPrefix "muffin " . appConfigFrom $ 
     runBotIO (UserToken "NzI1NjU3NjEwODU0MDcyMzcw.XwCB5Q.aHBzDdQ_Uvw-9EdgIzI-DmhQsVI") $ 
     do  conf <- getConfig
         react @'MessageCreateEvt $ \msg -> 
