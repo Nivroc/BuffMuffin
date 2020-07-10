@@ -54,8 +54,8 @@ import           Text.RE.TDFA.Text                          as R
 import           Lib
 import           Conditions
 
---main = print "tests passed"
-
+main = print "tests passed"
+{-
 main :: IO ()
 main = runTestTT tests >>= print
    
@@ -122,5 +122,5 @@ defMess time content = M.Message{
     M.webhookID = Nothing, 
     M.type_ = M.Default
 } 
-
+-}
     
