@@ -41,12 +41,12 @@ data AppConfig = AppConfig {
 fromCfgFile :: Config -> IO AppConfig
 fromCfgFile cfg = do
     myID <- (getID @User) <$> lookupDefault ("728488898669445150" :: Text) cfg "myid"
-    mrally <- (getID @Channel) <$> lookupDefault ("725657927033028672" :: Text) cfg "mrally"
-    mrhorde <- (getID @Channel) <$> lookupDefault ("725657952400441374" :: Text) cfg "mrhorde"
-    mrdmt <- (getID @Channel) <$> lookupDefault ("725657927033028672" :: Text) cfg "mrdmt"
-    mrheart <- (getID @Channel) <$> lookupDefault ("725657927033028672" :: Text) cfg "mrheart"
-    controls <- (fmap . fmap $ getID @Channel) (lookupDefault ["725657927033028672":: Text] cfg "controls")
-    output <- (getID @Channel) <$> lookupDefault ("725657927033028672" :: Text) cfg "output"
+    mrally <- (getID @Channel) <$> lookupDefault ("725657927033028672" :: Text) cfg "channeldict.mrally"
+    mrhorde <- (getID @Channel) <$> lookupDefault ("725657952400441374" :: Text) cfg "channeldict.mrhorde"
+    mrdmt <- (getID @Channel) <$> lookupDefault ("725657927033028672" :: Text) cfg "channeldict.mrdmt"
+    mrheart <- (getID @Channel) <$> lookupDefault ("725657927033028672" :: Text) cfg "channeldict.mrheart"
+    controls <- (fmap . fmap $ getID @Channel) (lookupDefault ["725657927033028672":: Text] cfg "channeldict.controls")
+    output <- (getID @Channel) <$> lookupDefault ("725657927033028672" :: Text) cfg "channeldict.output"
     password <- require cfg "password"
     return $ AppConfig myID mrally mrhorde mrdmt mrheart controls output password
 
