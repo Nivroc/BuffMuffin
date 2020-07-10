@@ -22,8 +22,11 @@ passthrough msg posList negList = condDefault False targetList
     where targetList = ((\f -> (f msg, False)) <$> negList) ++ ((\f -> (f msg, True)) <$> posList)
 
 anyKeywords :: [Text] -> Condition
-anyKeywords words msg = getAny $ mconcat $ Any . flip E.isInfixOf (E.toUpper content) . E.toUpper <$> words
+anyKeywords words msg = anyKeywordsPT words content
     where content = toText $ msg ^. #content
+
+anyKeywordsPT :: [Text] -> Text -> Bool
+anyKeywordsPT words content = getAny $ mconcat $ Any . flip E.isInfixOf (E.toUpper content) . E.toUpper <$> words
 
 noneKeywords = (not .) . anyKeywords
 

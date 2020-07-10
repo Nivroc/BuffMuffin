@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 09e0ad38dd5becffc2ff7b281f1e58cd039a7f98051c9e35a8ca005571741a77
+-- hash: ad8e9d96faf0d9014ff89ccad037d355cddd47c849d7fd89a9b29bbb0b48b072
 
 name:           BuffMuffin
 version:        0.1.0.0
@@ -28,7 +28,9 @@ source-repository head
 library
   exposed-modules:
       Conditions
+      Interpreters
       Lib
+      Model
   other-modules:
       Paths_BuffMuffin
   hs-source-dirs:
@@ -39,6 +41,7 @@ library
     , base >=4.7 && <5
     , calamity
     , cond
+    , configurator
     , data-default-class
     , di-polysemy
     , generic-lens
@@ -66,6 +69,7 @@ executable BuffMuffin-exe
     , base >=4.7 && <5
     , calamity
     , cond
+    , configurator
     , data-default-class
     , di-polysemy
     , generic-lens
@@ -94,6 +98,7 @@ test-suite Learn2-test
     , base >=4.7 && <5
     , calamity
     , cond
+    , configurator
     , data-default-class
     , di-polysemy
     , generic-lens

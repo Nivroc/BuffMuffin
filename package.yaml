@@ -36,6 +36,7 @@ dependencies:
 - vector
 - time
 - HUnit
+- configurator
 
 library:
   source-dirs: src

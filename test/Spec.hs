@@ -85,12 +85,14 @@ test2 = TestCase $ do
     result4 <- checkMessageContent  ("whens heart popping":: LText)
     result5 <- checkMessageContent  ("ony buff at 19.20?":: LText)
     result6 <- checkMessageContent  ("find someone with a head :4head:":: LText)
+    result7 <- checkMessageContent  ("I get pissed too cuz then I have to work :KEKW:":: LText)
     assertEqual "Any pops today" False result1
     assertEqual "popping now?" False result2
     assertEqual "not sure about any buffs" False result3
     assertEqual "whens heart popping" False result4
     assertEqual "ony buff at 19.20?" False result5
     assertEqual "find someone with a head :4head:" False result6
+    assertEqual "I get pissed too cuz then I have to work :KEKW:" False result7
 
 checkMessageContent :: LText -> IO Bool
 checkMessageContent content = do
