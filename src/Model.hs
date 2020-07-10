@@ -41,10 +41,10 @@ data AppConfig = AppConfig {
 fromCfgFile :: Config -> IO AppConfig
 fromCfgFile cfg = do
     myID <- (getID @User) <$> lookupDefault ("728488898669445150" :: Text) cfg "myid"
-    mrally <- (getID @Channel) <$> lookupDefault ("725657927033028672" :: Text) cfg "channeldict.mrally"
-    mrhorde <- (getID @Channel) <$> lookupDefault ("725657952400441374" :: Text) cfg "channeldict.mrhorde"
-    mrdmt <- (getID @Channel) <$> lookupDefault ("725657927033028672" :: Text) cfg "channeldict.mrdmt"
-    mrheart <- (getID @Channel) <$> lookupDefault ("725657927033028672" :: Text) cfg "channeldict.mrheart"
+    mrally <- (getID @Channel) <$> lookupDefault ("731183786636869773" :: Text) cfg "channeldict.mrally"
+    mrhorde <- (getID @Channel) <$> lookupDefault ("731183759705112697" :: Text) cfg "channeldict.mrhorde"
+    mrdmt <- (getID @Channel) <$> lookupDefault ("731183831826169976" :: Text) cfg "channeldict.mrdmt"
+    mrheart <- (getID @Channel) <$> lookupDefault ("731183813341872159" :: Text) cfg "channeldict.mrheart"
     controls <- (fmap . fmap $ getID @Channel) (lookupDefault ["725657927033028672":: Text] cfg "channeldict.controls")
     output <- (getID @Channel) <$> lookupDefault ("725657927033028672" :: Text) cfg "channeldict.output"
     password <- require cfg "password"
@@ -115,8 +115,9 @@ instance Conditionable MuffinSource where
 
     messageToSend MRAlliance c = regularContent "MRAlliance: " c
     messageToSend MRHorde content = if anyKeywordsPT ["rend ", "wcb ", "warning"] content 
-                                    then regularContent "<@&721396284061122560> MRHorde(rend): " content 
+                                    then #allowedMentions .~ roles $ regularContent "<@&721396284061122560> MRHorde(rend): " content 
                                     else regularContent "MRHorde(rend): " content
+                                    where roles = Just (set #roles [(getID $ ("721396284061122560" :: Text))] def)
     messageToSend MRHeart c = regularContent "MRHeart: " c
     messageToSend MRDireMaulTribute c = regularContent "MRDireMaulTribute: " c
     messageToSend (Other t) c = regularContent "Other server: " c
