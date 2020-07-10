@@ -108,9 +108,9 @@ instance Conditionable MuffinSource where
     muffpass (Other c) = [havanaRoomMention (getID $ ("609639269459427339" :: Text))]
 
     mufffail MRAlliance = freqNeg
-    mufffail MRHorde = [anyKeywords ["summon", "ony", "nef"]]
+    mufffail MRHorde = freqNeg ++ [anyKeywords ["summon", "ony", "nef"]]
     mufffail MRHeart = freqNeg
-    mufffail MRDireMaulTribute = [anyKeywords ["warning "]]
+    mufffail MRDireMaulTribute = freqNeg ++ [anyKeywords ["warning "]]
     mufffail (Other c) = []
 
     messageToSend MRAlliance c = regularContent "MRAlliance: " c
