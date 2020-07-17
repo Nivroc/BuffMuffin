@@ -116,7 +116,7 @@ instance Conditionable MuffinSource where
 
     messageToSend MRAlliance c = regularContent "MRAlliance: " c
     messageToSend MRHorde content = if anyKeywordsPT ["rend ", "wcb ", "warning"] content 
-                                    then #allowedMentions .~ roles $ regularContent "<@&721396284061122560> MRHorde(rend): " content 
+                                    then regularContent "MRHorde(rend): " content -- #allowedMentions .~ roles $ regularContent "<@&721396284061122560> MRHorde(rend): " content 
                                     else regularContent "MRHorde(rend): " content
                                     where roles = Just (set #roles [(getID $ ("721396284061122560" :: Text))] def)
     messageToSend MRHeart c = regularContent "MRHeart: " c
