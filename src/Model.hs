@@ -82,8 +82,7 @@ instance HasID Role Text where
 
 
 freqPos = [containsRegex [R.reMI|[0-9]?[0-9][. :]?[0-9][0-9]|],
-            containsRegex [R.reMI|in [0-9]?[0-9]|],
-            anyKeywords ["in a minute"]]
+            containsRegex [R.reMI|in [0-9]?[0-9]|]]
 freqNeg = [anyKeywords ["?", "when", "anyone", "not sure", "unsure", "plz ", "pls ", "please"],
             containsRegex [R.reMI|[0-9][0-9][0-9][0-9][0-9]|]] 
 
@@ -116,7 +115,7 @@ instance Conditionable MuffinSource where
 
     messageToSend MRAlliance c = regularContent "MRAlliance: " c
     messageToSend MRHorde content = if anyKeywordsPT ["rend ", "wcb ", "warning"] content 
-                                    then regularContent "MRHorde(rend): " content -- #allowedMentions .~ roles $ regularContent "<@&721396284061122560> MRHorde(rend): " content 
+                                    then #allowedMentions .~ roles $ regularContent "<@&721396284061122560> MRHorde(rend): " content 
                                     else regularContent "MRHorde(rend): " content
                                     where roles = Just (set #roles [(getID $ ("721396284061122560" :: Text))] def)
     messageToSend MRHeart c = regularContent "MRHeart: " c
