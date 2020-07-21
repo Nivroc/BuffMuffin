@@ -83,7 +83,7 @@ instance HasID Role Text where
 
 freqPos = [containsRegex [R.reMI|[0-9]?[0-9][. :]?[0-9][0-9]|],
             containsRegex [R.reMI|in [0-9]?[0-9]|],
-            [anyKeywords ["in a minute"]]
+            anyKeywords ["in a minute"]]
 freqNeg = [anyKeywords ["?", "when", "anyone", "not sure", "unsure", "plz ", "pls ", "please"],
             containsRegex [R.reMI|[0-9][0-9][0-9][0-9][0-9]|]] 
 
